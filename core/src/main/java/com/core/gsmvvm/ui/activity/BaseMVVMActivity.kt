@@ -15,11 +15,11 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseMVVMActivity<B : ViewBinding> : AppCompatActivity() {
     lateinit var bindingView: B
     abstract fun getViewBinding(): B
-    private var showSystemUi = true
+    private var showBottomSystemUi = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupSystemUi()
+        setupBottomSystemUi()
         bindingView = getViewBinding()
         val view = bindingView.root
         setContentView(view)
@@ -29,8 +29,8 @@ abstract class BaseMVVMActivity<B : ViewBinding> : AppCompatActivity() {
         initListener()
     }
 
-    open fun setupSystemUi(show: Boolean = true) {
-        showSystemUi = show
+    open fun setupBottomSystemUi(show: Boolean = true) {
+        showBottomSystemUi = show
     }
 
     open fun initViews(savedInstanceState: Bundle?) {
@@ -69,7 +69,7 @@ abstract class BaseMVVMActivity<B : ViewBinding> : AppCompatActivity() {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
-            if (showSystemUi) {
+            if (showBottomSystemUi) {
                 window.insetsController?.show(WindowInsets.Type.navigationBars())
             }
         }
@@ -102,14 +102,14 @@ abstract class BaseMVVMActivity<B : ViewBinding> : AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            if (showSystemUi) return
+            if (showBottomSystemUi) return
             // Re-hide the navigation bar if the activity gains focus
             WindowInsetsControllerCompat(window, window.decorView).hide(WindowInsetsCompat.Type.navigationBars())
         }
     }
 
-    private fun hideSystemUI() {
-        if (showSystemUi) return
+    private fun hideBottomSystemUI() {
+        if (showBottomSystemUi) return
         // Create WindowInsetsControllerCompat instance
         val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
 
@@ -122,6 +122,6 @@ abstract class BaseMVVMActivity<B : ViewBinding> : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        hideSystemUI()
+        hideBottomSystemUI()
     }
 }

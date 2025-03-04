@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GsMVVM"
 include(":app")
-include(":GsMVVM")
+include(":core")
