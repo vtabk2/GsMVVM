@@ -35,8 +35,6 @@ captures/
 .idea/
 *.iml
 
-gradlew.bat
-gradlew
 app/release/output.json
 app/release/output-metadata.json
 app/release/baselineProfiles
