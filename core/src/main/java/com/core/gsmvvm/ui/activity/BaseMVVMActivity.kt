@@ -3,6 +3,7 @@ package com.core.gsmvvm.ui.activity
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -12,17 +13,18 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseMVVMActivity<B : ViewBinding> : AppCompatActivity() {
-    lateinit var bindingView: B
-    abstract fun getViewBinding(): B
+abstract class BaseMVVMActivity<VB : ViewBinding>(private val inflateBinding: (LayoutInflater) -> VB) : AppCompatActivity() {
+
+    val bindingView: VB by lazy { inflateBinding(layoutInflater) }
+
     private var showBottomSystemUi = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupBottomSystemUi()
-        bindingView = getViewBinding()
-        val view = bindingView.root
-        setContentView(view)
+
+        setContentView(bindingView.root)
+
         makeStatusBarTransparent()
         //
         initViews(savedInstanceState)
